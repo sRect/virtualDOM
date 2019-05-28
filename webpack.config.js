@@ -20,6 +20,13 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash:20].js' // 多出口
   },
+  resolve: {
+    // 能够使用户在引入模块时不带扩展
+    extensions: ['.js', '.json', '.vue', 'css', 'less'],
+    alias: {
+      '@': path.resolve(__dirname, './src')
+    }
+  },
   module: {
     rules: [
       {
