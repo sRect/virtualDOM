@@ -1,5 +1,6 @@
 import * as types from './types.js';
 
+let num = 0;
 function isString(node) {
   return Object.prototype.toString.call(node) === '[object String]';
 }
@@ -34,7 +35,18 @@ function diffAttr(oldAttrs, newAttrs) {
 
 // 比较子节点差异
 function diffChildren(oldChild, newChild, patches) {
-  
+  // 比较旧节点的第一个子节点和新节点的第一个子节点
+  if(oldChild && oldChild instanceof Array && oldChild.length) {
+    oldChild.forEach((node, i) => {
+      if (newChild) {
+        // 这里的索引不应该是 index
+        // 每次传递给 walk 时，index 是递增的，所有的人都基于同一个 index 来实现
+        // 得用一个全局的变量num
+        walk(node, newChild[i], ++num, patches);
+      }
+    })
+  }
+
 }
 
 // 遍历树 找出差异 放入补丁包中
@@ -44,7 +56,10 @@ function walk(oldNode, newNode, index, patches) {
   if(!newNode) { // 节点删除
     currentPatch.push({type: types.REMOVE, index});
   } else if (isString(oldNode) && isString(newNode)) { // 判断文本变化
-    currentPatch.push({ type: types.TEXT,text: newNode });
+    oldNode !== newNode ? currentPatch.push({
+      type: types.TEXT,
+      text: newNode
+    }) : undefined;
   }else if(oldNode.type === newNode.type) {
     // 比较属性差异
     let attrs = diffAttr(oldNode.props, newNode.props);
@@ -56,7 +71,7 @@ function walk(oldNode, newNode, index, patches) {
     diffChildren(oldNode.children, newNode.children, patches);
   } else {
     // 节点被替换
-    currentPatch.push({ type: REPLACE, newNode });
+    currentPatch.push({ type: REPLACE, index, newNode });
   }
 
   if (currentPatch.length) {
@@ -64,7 +79,7 @@ function walk(oldNode, newNode, index, patches) {
     patches[index] = currentPatch;
   }
 
-  console.log(patches)
+  // console.log(patches)
 } 
 
 export default diff;
