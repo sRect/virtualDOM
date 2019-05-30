@@ -55,5 +55,7 @@ function renderDOM(el, target) {
 export {
   createElement,
   render,
-  renderDOM
+  renderDOM,
+  Element, 
+  setAttr
 }

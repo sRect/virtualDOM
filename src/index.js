@@ -1,5 +1,6 @@
 import { createElement, render, renderDOM } from './element.js';
 import diff from './diff';
+import patch from '@/patch';
 
 let vertualDom1 = createElement('ul', { class: 'list' }, [
   createElement('li', { class: 'item' }, [
@@ -24,3 +25,7 @@ console.log(patches)
 renderDOM(el, document.body);
 console.log(vertualDom1);
 console.log(el);
+
+setTimeout(() => {
+  patch(el, patches);
+}, 5000)
