@@ -98,7 +98,7 @@ function walk(oldNode, newNode, index, patches) {
 } 
 ```
 
-### 把patches应用到真正的DOM树上
+### 第三步：把patches应用到真正的DOM树上
 ```javascript
 function patch(node, patches) {
   allPatches = patches;
