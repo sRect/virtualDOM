@@ -18,21 +18,30 @@ function patch(node, patches) {
 function walk(node) {
   let key = index++;
   let currentPatch = null;
-  if (Object.prototype.hasOwnProperty.call(allPatches, key)) {
-    currentPatch = allPatches[key];
+  // if (Object.prototype.hasOwnProperty.call(allPatches, key)) {
+  //   currentPatch = allPatches[key];
 
-    let childNodes = node.childNodes;
-    [...childNodes].forEach(child => walk(child)); // 深度先序
+  //   let childNodes = node.childNodes;
+  //   console.log(childNodes);
+  //   [...childNodes].forEach(child => walk(child)); // 深度先序
 
-    if (currentPatch && currentPatch.length) {
-      doPatch(node, currentPatch); // 打补丁是后序的
-    }
-  };
+  //   if (currentPatch && currentPatch.length) {
+  //     doPatch(node, currentPatch); // 打补丁是后序的
+  //   }
+  // };
   
+  currentPatch = allPatches[key];
+  let childNodes = node.childNodes;
+  console.log(childNodes);
+  [...childNodes].forEach(child => walk(child)); // 深度先序
+
+  if (currentPatch && currentPatch.length) {
+    doPatch(node, currentPatch); // 打补丁是后序的
+  }  
 }
 
 function doPatch(node, patches) {
-  console.log("=====")
+  console.log("=====", patches)
   patches.forEach(patch => {
     switch(patch.type) {
       case types.ATTRS:

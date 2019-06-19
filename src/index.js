@@ -23,9 +23,13 @@ let patches = diff(vertualDom1, vertualDom2);
 console.log(patches)
 
 renderDOM(el, document.body);
-console.log(vertualDom1);
-console.log(el);
+// console.log(vertualDom1);
+// console.log(el);
 
-setTimeout(() => {
+let btn = document.querySelector('#btn');
+btn.addEventListener('click', () => {
   patch(el, patches);
-}, 5000)
+})
+// setTimeout(() => {
+//   patch(el, patches);
+// }, 5000)
